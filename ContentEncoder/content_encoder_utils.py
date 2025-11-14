@@ -22,7 +22,7 @@ def getSpeaker(path, accent):
     speaker = ""
     for part in parts:
         if part.startswith("speaker_"):
-            speaker = part   # e.g., 'speaker_02'
+            speaker = part 
 
     speaker = accent + "_" + speaker
     return speaker
@@ -84,7 +84,7 @@ def scan_and_split_by_accent(root, val_ratio=0.2, random_state=42):
             train_pairs += [(p, accent) for p in tr]
             val_pairs   += [(p, accent) for p in va]
 
-        # All speaker2 files go to test
+        # Speaker2 files for test
         if len(spk2_wavs) > 0:
             test_pairs += [(p, accent) for p in spk2_wavs]
 
@@ -113,10 +113,10 @@ def generate_frame_level_data(feats, label, k = 20):
     return selected_features, labels 
 
 def near_duplicate_pairs(Xtr, Xte, topk=1, cos_thr=0.99):
-    Xt = Xtr#torch.tensor(Xtr, dtype=torch.float32)
-    Xe = Xte#torch.tensor(Xte, dtype=torch.float32)
+    Xt = Xtr #torch.tensor(Xtr, dtype=torch.float32)
+    Xe = Xte #torch.tensor(Xte, dtype=torch.float32)
     Xt = F.normalize(Xt, dim=1); Xe = F.normalize(Xe, dim=1)
-    sim = Xe @ Xt.T                       # [Nte, Ntr]
+    sim = Xe @ Xt.T                       
     max_sim, idx = sim.max(dim=1)
     hits = (max_sim.numpy() >= cos_thr).sum()
     print(f"Test items with cosine ≥ {cos_thr}: {hits}")
