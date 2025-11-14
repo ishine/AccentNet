@@ -8,7 +8,7 @@ The work is motivated by the communication barriers: multilingual regions such a
 
 The diagram in `AccentNet_Architecture.png` summarizes the pipeline:
 
-!['AccentNet_Architecture'](AccentNet_Architecture.png)
+!['AccentNet_Architecture'](images/AccentNet_Architecture.png)
 
 1. **Content Encoder** extracts linguistic features (ContentVec-sized 768-d vectors per frame).
 2. **Prosody Extractor** captures F0, energy, and duration cues from the source utterance.
@@ -190,3 +190,8 @@ pip install speechbrain librosa pyworld soundfile
 
 GPU acceleration is highly recommended for the Conformer encoder and FastSpeech2 decoder training loops.
 
+## Alternate Approach
+
+!['Alternate_AccentNet_Architecture'](images/alternate_architecture.png)
+
+An additional prototype (see `Alternate Architecture/`) combines entirely pretrained modules for a faster baseline. Raw source audio feeds a convolution + GRU speaker encoder trained on British English voices to obtain fixed-length identity embeddings, while Whisper ASR extracts transcripts. A Tacotron synthesizer conditions the text on the speaker embedding to predict mel spectrograms, and a WaveRNN vocoder renders them into waveforms. This modular stack preserves speaker timbre and linguistic content with minimal training, but it lacks the explicit accent disentanglement provided by the main AccentNet pipeline.
