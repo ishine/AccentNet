@@ -8,8 +8,9 @@ class SpeakerEncoder:
         self.classifier = EncoderClassifier.from_hparams(source=model_name, run_opts={"device": device})
         self.device = device
 
-    def extract_embedding(self, audio_path):
-        signal, fs = torchaudio.load(audio_path)
+    def extract_embedding(self, audio_path, signal = None, fs = 0):
+        if signal is None:
+            signal, fs = torchaudio.load(audio_path)
         if signal.shape[0] > 1:
             signal = torch.mean(signal, dim=0, keepdim=True)
         signal = signal.squeeze()
